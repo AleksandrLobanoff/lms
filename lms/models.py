@@ -1,5 +1,7 @@
 from django.db import models
 
+from users.models import User
+
 NULLABLE = {'blank': True, 'null': True}
 
 
@@ -30,3 +32,23 @@ class Lesson(models.Model):
     class Meta:
         verbose_name = 'Урок'
         verbose_name_plural = 'Уроки'
+
+
+class Payments(models.Model):
+    PAYMENT_METHOD = [
+        ('cash', 'наличными'),
+        ('transfer_to_account', 'перевод на счет')
+    ]
+    user = models.ForeignKey(User, on_delete=models.CASCADE)
+    payment_date = models.DateTimeField(auto_now_add=True, verbose_name='даиа оплаты')
+    paid_course = models.ForeignKey(Course, on_delete=models.CASCADE, verbose_name='оплаченный курс', **NULLABLE)
+    paid_lesson = models.ForeignKey(Lesson, on_delete=models.CASCADE, verbose_name='оплаченный урок', **NULLABLE)
+    payment_amount = models.IntegerField(verbose_name='сумма оплаты')
+    payment_method = models.CharField(max_length=19, choices=PAYMENT_METHOD, verbose_name='способ оплаты')
+
+    def __str__(self):
+        return f'{self.paid_course if self.paid_course else self.paid_lesson} {self.payment_date} {self.payment_amount}'
+
+    class Meta:
+        verbose_name = 'платеж'
+        verbose_name_plural = 'платежи'
