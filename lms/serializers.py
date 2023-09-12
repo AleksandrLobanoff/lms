@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from lms.models import Course, Lesson, Payments
+from lms.models import Course, Lesson, Payments, CourseSubscription
 from lms.validators import LinkValidator
 
 
@@ -30,3 +30,10 @@ class PaymentsSerializer(serializers.ModelSerializer):
     class Meta:
         model = Payments
         fields = '__all__'
+
+
+class CourseSubscriptionSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = CourseSubscription
+        fields = '__all__'
+

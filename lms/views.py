@@ -4,15 +4,18 @@ from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
-from lms.models import Course, Lesson, Payments
+from lms.models import Course, Lesson, Payments, CourseSubscription
+from lms.paginators import CoursePaginator, LessonPaginator
 from lms.permissions import IsStaff, IsOwner
-from lms.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer
+from lms.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer, CourseSubscriptionSerializer
 
 
 class CourseViewSet(viewsets.ModelViewSet):
     serializers_class = CourseSerializer
     queryset = Course.objects.all()
     permission_classes = [IsAuthenticated, IsStaff | IsOwner]
+
+    pagination_class = CoursePaginator
 
     def perform_create(self, serializer):
         new_course = serializer.save()
@@ -34,6 +37,8 @@ class LessonListAPIView(generics.ListAPIView):
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner | IsStaff]
+
+    pagination_class = LessonPaginator
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
@@ -61,3 +66,12 @@ class PaymentsListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('paid_course', 'paid_lesson', 'payment_method')
     ordering_fields = ('date',)
+
+
+class CourseSubsriptionCreateApiView(generics.CreateAPIView):
+    serializer_class = CourseSubscriptionSerializer
+
+
+class CourseSubscriptionDeleteApiView(generics.DestroyAPIView):
+    serializer_class = CourseSubscriptionSerializer
+    queryset = CourseSubscription.objects.all()
