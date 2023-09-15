@@ -11,6 +11,8 @@ from lms.serializers import CourseSerializer, LessonSerializer, PaymentsSerializ
 
 
 class CourseViewSet(viewsets.ModelViewSet):
+    """ Класс для работы с представлением курсов"""
+
     serializers_class = CourseSerializer
     queryset = Course.objects.all()
     permission_classes = [IsAuthenticated, IsStaff | IsOwner]
@@ -34,6 +36,9 @@ class LessonCreateAPIView(generics.CreateAPIView):
 
 
 class LessonListAPIView(generics.ListAPIView):
+    """
+       Класс представления для списка занятий.
+    """
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner | IsStaff]
@@ -42,23 +47,35 @@ class LessonListAPIView(generics.ListAPIView):
 
 
 class LessonRetrieveAPIView(generics.RetrieveAPIView):
+    """
+    Класс представления для получения информации об уроке.
+    """
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner | IsStaff]
 
 
 class LessonUpdateAPIView(generics.UpdateAPIView):
+    """
+      Класс представления для обновления информации об уроке.
+    """
     serializer_class = LessonSerializer
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner | IsStaff]
 
 
 class LessonDestroyAPIView(generics.DestroyAPIView):
+    """
+        Класс представления для удаления урока.
+    """
     queryset = Lesson.objects.all()
     permission_classes = [IsAuthenticated, IsOwner, IsStaff]
 
 
 class PaymentsListAPIView(generics.ListAPIView):
+    """
+        Класс представления для списка платежей.
+    """
     serializer_class = PaymentsSerializer
     queryset = Payments.objects.all()
     permission_classes = [IsAuthenticated]
@@ -69,9 +86,15 @@ class PaymentsListAPIView(generics.ListAPIView):
 
 
 class CourseSubsriptionCreateApiView(generics.CreateAPIView):
+    """
+       Класс представления для создания подписки на курс.
+    """
     serializer_class = CourseSubscriptionSerializer
 
 
 class CourseSubscriptionDeleteApiView(generics.DestroyAPIView):
+    """
+       Класс представления для удаления подписки на курс.
+    """
     serializer_class = CourseSubscriptionSerializer
     queryset = CourseSubscription.objects.all()
