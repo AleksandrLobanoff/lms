@@ -1,9 +1,9 @@
-from django.shortcuts import render
 from django_filters.rest_framework import DjangoFilterBackend
 from rest_framework import viewsets, generics
 from rest_framework.filters import OrderingFilter
 from rest_framework.permissions import IsAuthenticated
 
+from lms import services
 from lms.models import Course, Lesson, Payments, CourseSubscription
 from lms.paginators import CoursePaginator, LessonPaginator
 from lms.permissions import IsStaff, IsOwner
@@ -83,6 +83,17 @@ class PaymentsListAPIView(generics.ListAPIView):
     filter_backends = [DjangoFilterBackend, OrderingFilter]
     filterset_fields = ('paid_course', 'paid_lesson', 'payment_method')
     ordering_fields = ('date',)
+
+
+class PaymentsCreateAPIView(generics.CreateAPIView):
+    def create(self, request, *args, **kwargs):
+        number = request.data['card_number']
+        exp_month = request.data['card_exp_month']
+        exp_year = request.data['card_exp_year']
+        cvc = request.data['card_cvc']
+        bill_id = services.create_payment(1000, 'usd')
+        status = services.make_payment(bill_id, number, exp_month, exp_year, cvc)
+        return Response({'status': status})
 
 
 class CourseSubsriptionCreateApiView(generics.CreateAPIView):
