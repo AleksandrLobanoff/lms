@@ -8,6 +8,7 @@ from lms.models import Course, Lesson, Payments, CourseSubscription
 from lms.paginators import CoursePaginator, LessonPaginator
 from lms.permissions import IsStaff, IsOwner
 from lms.serializers import CourseSerializer, LessonSerializer, PaymentsSerializer, CourseSubscriptionSerializer
+from lms.tasks import send_email_course_update
 
 
 class CourseViewSet(viewsets.ModelViewSet):
@@ -23,6 +24,10 @@ class CourseViewSet(viewsets.ModelViewSet):
         new_course = serializer.save()
         new_course.owner = self.request.user
         new_course.save()
+
+    def perform_update(self, serializer):
+        updated_course = serializer.save()
+        send_email_course_update.delay(updated_course.pk)
 
 
 class LessonCreateAPIView(generics.CreateAPIView):

@@ -19,6 +19,8 @@ django-cors-headers = "^4.2.0"
 requests = "^2.31.0"
 celery = "^5.3.4"
 redis = "^5.0.0"
+django-celery-beat = "^2.5.0"
+python-dotenv = "^1.0.0"
 
 
 [build-system]
