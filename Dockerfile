@@ -4,6 +4,8 @@ WORKDIR /app
 
 COPY ./pyproject.toml .
 
+RUN pip install poetry
+
 RUN poetry install --no-dev
 
 COPY . .
