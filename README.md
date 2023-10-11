@@ -16,7 +16,7 @@ docker build -t name image
 docker run name image
 
 
-#### Запуск через Docker Compose
+## Запуск через Docker Compose
 
 `docker-compose up -d --build`
 
