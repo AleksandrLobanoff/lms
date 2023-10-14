@@ -16,6 +16,16 @@ docker build -t name image
 docker run name image
 
 
+## Запуск через Docker Compose
+
+`docker-compose up -d --build`
+
+
+Для остановки:
+
+`docker-compose down`
+
+
 ## Проект содержит два приложения:
 
 ### LMS:
