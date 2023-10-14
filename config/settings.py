@@ -51,7 +51,6 @@ INSTALLED_APPS = [
     'corsheaders',
     'django_celery_beat',
 
-
 ]
 
 MIDDLEWARE = [
@@ -93,9 +92,10 @@ WSGI_APPLICATION = 'config.wsgi.application'
 DATABASES = {
     'default': {
         'ENGINE': 'django.db.backends.postgresql',
-        'NAME': 'lms',
-        'USER': 'postgres',
-        'PASSWORD': 'neskaju',
+        'NAME': os.getenv('NAME_DB'),
+        'USER': os.getenv('USER_DB'),
+        'PASSWORD': os.getenv('PASSWORD_DB'),
+        'HOST':
 
     }
 }
@@ -140,7 +140,6 @@ STATIC_URL = 'static/'
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 AUTH_USER_MODEL = 'users.User'
 
-
 REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': (
         'rest_framework_simplejwt.authentication.JWTAuthentication',
@@ -163,8 +162,8 @@ CSRF_TRUSTED_ORIGINS = [
 STRIPE_PUBLIC_KEY = 'pk_test_51Nr0KmCV3SZxp6d67RSAAKVfINrB27T5pa0uWv4LmYiHYo0PHKkCjpRSW8gkRTSFxenGRRQQzlD4LVdwYzP8lw1900u1u3R6AT'
 STRIPE_SECRET_KEY = 'sk_test_51Nr0KmCV3SZxp6d60ONmEjxScNyJHjkD5R3y502hsgJg4vzRsMgmhfGpsEhBlJ9Ii8dvbhi5NFqu8uYhAprJtdvA00pWij2xTj'
 
-CELERY_BROKER_URL = 'redis://localhost:6379/0'
-CELERY_RESULT_BACKEND = 'redis://localhost:6379/0'
+CELERY_BROKER_URL = 'redis://redis:6379/0'
+CELERY_RESULT_BACKEND = 'redis://redis:6379/0'
 
 EMAIL_HOST = os.getenv('EMAIL_HOST')
 EMAIL_PORT = os.getenv('EMAIL_PORT')

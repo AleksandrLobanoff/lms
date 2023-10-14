@@ -5,13 +5,22 @@ services:
     image: redis
     ports:
       - '6379:6379'
+    healthcheck:
+      test: [ "CMD", "redis-cli", "ping" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
 
   db:
     image: postgres
-    env_file:
-      -.env.docker
+    user: ${USER_DB}
+    environment:
+      - POSTGRES_DB=&{NAME_DB}
+      - POSTGRES_USER=${USER_DB}
+      - POSTGRES_PASSWORD=${PASSWORD_DB}
+      - PGDATA=/var/lib/postgresql/data/pgdata
     volumes:
-      -pg_data:var/lib/postgresql/data/pgdata
+      - pg_data:/var/lib/postgresql/data/pgdata
     ports:
       - '5432:5432'
     healthcheck:
